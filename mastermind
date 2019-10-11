@@ -1,0 +1,140 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package mastermind;
+
+import java.util.Random;
+import java.util.Scanner;
+/**
+ *
+ * @author mbisp
+ */
+public class Mastermind {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+       
+         
+    boolean jogo=true;  
+    boolean jaAchou=false;
+    String[] corSort={"","","",""};
+    String[] corResposta={"","","",""};
+    String[] cores ={"Amarelo", "Azul", "Verde", "Vermelho", "Laranja", "Magenta", "Cinza", "Rosa"};
+    int i,j;
+    int [] valor = {0,0,0,0};
+    int soma=0;
+    int tentativas=1;
+    int valorCor=0;
+    int troca=0;
+    Scanner ler = new Scanner(System.in);
+    Random random = new Random();
+    for (i=0;i<4;i++){
+        int qualCor = random.nextInt(8);
+        corSort[i] = cores[qualCor]; 
+        System.out.printf("Cor Escolhida %d : %s \n", i, corSort[i]);
+        
+        //Jogo executando
+    }
+    while(jogo==true){
+        soma=0;
+        System.out.printf("Digite o número das cores abaixo:\n");
+            System.out.printf("1 - Amarelo, 2 - Azul, 3 - Verde, 4 - Vermelho, 5 - Laranja, 6 - Magenta, 7 - Cinza, 8 - Rosa\n");
+             System.out.printf("Tentativa de número %d:\n",tentativas);
+             
+         //Entrada das opções
+        for(i=0;i<4;i++){ 
+            System.out.printf("digite a cor da Posição %d: \n",i+1);
+            
+            valorCor = ler.nextInt();
+            while(valorCor>8){
+                System.out.printf("Digite o número das cores abaixo:\n");
+            System.out.printf("1 - Amarelo, 2 - Azul, 3 - Verde, 4 - Vermelho, 5 - Laranja, 6 - Magenta, 7 - Cinza, 8 - Rosa\n");
+             System.out.printf("Tentativa de número %d:\n",tentativas);
+             System.out.printf("digite a cor da Posição %d: \n",i+1);
+             System.out.printf("Por favor digite um número entre 1 e 8 \n");
+             valorCor = ler.nextInt();
+            }
+            switch(valorCor){
+                case 1: // caso o número passado for 1
+                corResposta[i] = "Amarelo";
+                continue;
+                case 2: // caso o número passado for 1
+                corResposta[i] = "Azul";
+                continue;
+                case 3: // caso o número passado for 1
+                corResposta[i] = "Verde";
+                continue;
+                case 4: // caso o número passado for 1
+                corResposta[i] = "Vermelho";
+                continue;
+                case 5: // caso o número passado for 1
+                corResposta[i] = "Laranja";
+                continue;
+                case 6: // caso o número passado for 1
+                corResposta[i] = "Magenta";
+                continue;
+                case 7: // caso o número passado for 1
+                corResposta[i] = "Cinza";
+                continue;
+                case 8: // caso o número passado for 1
+                corResposta[i] = "Rosa";
+                continue;
+                default:
+                    continue;
+            }
+            
+            
+        }
+        //Descobre se tem valores de cores corretos
+        for(i=0;i<4;i++){
+            jaAchou=false;
+            for(j=0;j<4;j++){
+                if(corResposta[i].equals(corSort[j])&&i==j){
+                 valor[i]  = 1;
+                 jaAchou = true;
+                 
+                }else if(corResposta[i].equals(corSort[j])&&i!=j&&!jaAchou){
+                    valor[i]  = -1;
+                    jaAchou = true;
+                }else if(!jaAchou){
+                    valor[i] = 0;
+                }
+            }
+        }
+        //Ordena o Array de valor com os 1, -1 e zero
+        for(i=0;i<4;i++){
+            for(j=0;j<4;j++){
+            if(valor[i]==0&&j>i){
+                troca = valor[i];
+                valor[i] = valor[j];
+                valor[j] = troca;
+            }
+            if(valor[i]==-1&&j>i&&valor[j]==1){
+                troca = valor[i];
+                valor[i] = valor[j];
+                valor[j] = troca;
+            }
+          }   
+        }
+
+        
+                
+        for(i=0;i<4;i++){
+            System.out.printf("Resposta Quadra %d: %d\n", i,valor[i]);
+            soma = soma + valor[i];
+            
+        }
+        System.out.printf("Valor Soma %d: \n", soma);
+        if(soma==4||tentativas==10){
+            jogo=false;
+            if(soma==4)System.out.printf("Parabéns Você Ganhou!\n");
+            else System.out.printf("Infelizmente Você não descobriu a SENHA!\n");
+        }else if(soma!=4&&tentativas<10)System.out.printf("Tente novamente!\n");
+        tentativas++;
+    }
+  }
+}
